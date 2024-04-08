@@ -10,7 +10,7 @@ export const FileUpload: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
 
     // Set API endpoint URL
-    const apiUrl = 'https://q591dyr3zl.execute-api.us-east-1.amazonaws.com/v1/receipts';
+    const apiUrl = 'https://ssj7vr3i93.execute-api.us-east-1.amazonaws.com/v1/receipts';
 
     const { getRootProps, getInputProps } = useDropzone({
         accept: {
@@ -52,9 +52,9 @@ export const FileUpload: React.FC = () => {
         try {
             // Convertir le fichier sélectionné en base64
             const reader = new FileReader();
-            reader.readAsDataURL(selectedFile); // Cela va lire le fichier en tant que Data URL (base64)
-
+            reader.readAsDataURL(selectedFile); // Cela va lire le fichier en tant que Data URL (base64
             reader.onload = async () => {
+
                 // Extraire la chaîne base64
                 const base64String = reader.result as string;
                 // Créer un objet JSON avec la chaîne base64
@@ -64,21 +64,33 @@ export const FileUpload: React.FC = () => {
                 console.log("***************************************************");
                 console.log("JSON Payload: ");
                 console.log(jsonPayload);
-
                 try {
-                    // Envoi de la requête POST avec l'objet JSON dans le corps
-                    const response = await axios.post(apiUrl, jsonPayload, {
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                           'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Origin': '*',
+                        },
 
-                        }
+                        body: JSON.stringify(jsonPayload)
                     });
-                    console.log("***************************************************");
-                    console.log("Response from API: ");
-                    console.log(response);
-                    setMessage('Le fichier PDF a été téléversé avec succès.');
-                    setError(null);
+
+                    // Vérification de la réussite de la requête
+                    if (response.ok) {
+                        //afficher la reponse de server
+                        const data = await response.json();
+                        console.log("***************************************************");
+                        console.log("Response from API: ");
+                        console.log(data);
+                        setMessage(data.body);
+                        setError(null);
+                    } else {
+                        // En cas d'erreur, afficher le message d'erreur de la réponse
+                        const errorMessage = await response.text();
+                        setError(`Une erreur s’est produite lors du téléversement du fichier. Erreur : ${errorMessage}`);
+                        setMessage(null);
+                    }
                 } catch (error) {
                     console.log("***************************************************");
                     console.log("Error from API: ");
@@ -86,14 +98,6 @@ export const FileUpload: React.FC = () => {
                     setError('Une erreur s’est produite lors du téléversement du fichier.\t '+error);
                     setMessage(null);
                 }
-            };
-
-            reader.onerror = (error) => {
-                console.log("***************************************************");
-                console.log("Error converting file to base64: ");
-                console.log(error);
-                setError('Une erreur s’est produite lors de la conversion du fichier en base64.');
-                setMessage(null);
             };
         } catch (error) {
             console.log("***************************************************");
