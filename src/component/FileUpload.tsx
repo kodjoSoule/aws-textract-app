@@ -10,7 +10,7 @@ export const FileUpload: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
 
     // Set API endpoint URL
-    const apiUrl = 'https://file.io';
+    const apiUrl = 'https://q591dyr3zl.execute-api.us-east-1.amazonaws.com/v1/receipts';
 
     const { getRootProps, getInputProps } = useDropzone({
         accept: {
@@ -40,7 +40,6 @@ export const FileUpload: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-
         if (!selectedFile) {
             setError('Veuillez sélectionner un fichier PDF.');
             setMessage(null);
@@ -51,53 +50,60 @@ export const FileUpload: React.FC = () => {
         setLoading(true);
 
         try {
-            // File to upload as a binary string
-            const formData = new FormData();
-            formData.append('file', selectedFile);
-            console.log("***************************************************");
-            //selectedFile to binary string
-            // const reader = new FileReader();
-            // const binaryFile =new Blob([selectedFile], {type: 'application/pdf'});
-            // reader.readAsBinaryString(selectedFile);
-            // // reader.onloadend = () => {
-            //     console.log("Binary String: ");
-            //     console.log(reader.result);
-            // };
-            // console.log("selectedFile: ");
-            //to binary string
-            // console.log(
-            //     selectedFile
+            // Convertir le fichier sélectionné en base64
+            const reader = new FileReader();
+            reader.readAsDataURL(selectedFile); // Cela va lire le fichier en tant que Data URL (base64)
 
-            // );
-            // Envoi de la requête POST avec l'objet JSON dans le corps
-            await axios.post(
-                apiUrl
-                , formData, {
-                    headers: {
-                        'Content-Type': 'application/pdf'
-                    }
-                })
-                .then((response) => {
+            reader.onload = async () => {
+                // Extraire la chaîne base64
+                const base64String = reader.result as string;
+                // Créer un objet JSON avec la chaîne base64
+                const jsonPayload = {
+                    file: base64String
+                };
+                console.log("***************************************************");
+                console.log("JSON Payload: ");
+                console.log(jsonPayload);
+
+                try {
+                    // Envoi de la requête POST avec l'objet JSON dans le corps
+                    const response = await axios.post(apiUrl, jsonPayload, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                           'Access-Control-Allow-Origin': '*',
+
+                        }
+                    });
                     console.log("***************************************************");
                     console.log("Response from API: ");
                     console.log(response);
-                })
-                .catch((error) => {
+                    setMessage('Le fichier PDF a été téléversé avec succès.');
+                    setError(null);
+                } catch (error) {
                     console.log("***************************************************");
                     console.log("Error from API: ");
                     console.log(error);
-                });
-            setMessage('Le fichier PDF a été téléversé avec succès.');
-            setError(null);
+                    setError('Une erreur s’est produite lors du téléversement du fichier.\t '+error);
+                    setMessage(null);
+                }
+            };
+
+            reader.onerror = (error) => {
+                console.log("***************************************************");
+                console.log("Error converting file to base64: ");
+                console.log(error);
+                setError('Une erreur s’est produite lors de la conversion du fichier en base64.');
+                setMessage(null);
+            };
         } catch (error) {
             console.log("***************************************************");
             console.log(error);
-        }
-        finally {
-            setLoading(false); // Désactiver l'indicateur de chargement une fois le téléversement terminé
+            setError('Une erreur s’est produite lors du traitement de la demande.');
+            setMessage(null);
+        } finally {
+            setLoading(false);
         }
     };
-
     return (
         <>
             <Header />
