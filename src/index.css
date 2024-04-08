@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+/* Add this CSS to make the drag-and-drop area look nice */
+.dropzone {
+  border: 2px dashed #007bff;
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
