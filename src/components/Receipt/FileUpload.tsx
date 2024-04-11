@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Accept, useDropzone } from 'react-dropzone';
 import axios from 'axios';
-import Header from './Header';
+import Header from '../Header';
 export const FileUpload: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [message, setMessage] = useState<string | null>(null);
@@ -59,6 +59,7 @@ export const FileUpload: React.FC = () => {
                 const base64String = reader.result as string;
                 // Créer un objet JSON avec la chaîne base64
                 const jsonPayload = {
+                    fileName: selectedFile.name,
                     file: base64String
                 };
                 console.log("***************************************************");
@@ -110,15 +111,26 @@ export const FileUpload: React.FC = () => {
     };
     return (
         <>
-            <Header />
             <div className="mt-4 container">
 
                 <div className='row '>
                     <div className='col-10 mx-auto' >
-                        <h2>Upload de fichier PDF</h2>
+                        <h2>
+                            Téléversement de fichiers PDF
+                        </h2>
                         {errorDropzone && <div className='alert alert-danger mt-2' role='alert'>{errorDropzone}</div>}
                         <form onSubmit={handleSubmit} method='post' id='pdf-upload-form' encType='multipart/form-data' className='mt-4'>
-                            <div {...getRootProps({ className: 'dropzone' })}>
+                            <div {...getRootProps({ className: 'dropzone' })} style={
+                                {
+                                    border: '1px dashed #000',
+                                    borderRadius: '5px',
+                                    padding: '20px',
+                                    textAlign: 'center',
+                                    cursor: 'pointer',
+                                    backgroundColor: '#f0f0f0'
+                                }
+
+                            }>
                                 <input {...getInputProps()}  id='fileInput'/>
                                 <p>Faites glisser un fichier PDF ici ou cliquez pour en sélectionner un</p>
                             </div>
