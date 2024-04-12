@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Accept, useDropzone } from 'react-dropzone';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../Header';
+import { Body } from 'react-bootstrap/lib/Media';
 export const FileUpload: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [message, setMessage] = useState<any | null>(null);
@@ -9,6 +11,7 @@ export const FileUpload: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [errorDropzone, setErrorDropzone] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
+    const [ dataBody, setDataBody] = useState<any | null>(null);
 
 
 
@@ -86,6 +89,8 @@ export const FileUpload: React.FC = () => {
                         console.log(data);
                         if(data.message !== undefined){
                             setMessage(data.message);
+                            const data_json = JSON.parse(data.body);
+                            setDataBody(data_json);
                         }
                         if(data.body !== undefined){
                             const data_body = JSON.parse(data.body);
@@ -221,25 +226,19 @@ export const FileUpload: React.FC = () => {
                 {/* extrait de fichier */}
                 { fileData && (
                 <div className="row">
+                    {/* LE FICHIER A ETE EXTRAIT AVEC SUCCEESS */}
                     <div className="col-10 mx-auto">
                         <div className="card mt-4">
                             <div className="card-body">
-                                <h5 className="card-title">Extrait de fichier</h5>
-                                <p>Data <br/> {fileData}</p>
-                                {/* <p className="card-text">
-                                    {fileData && Object.entries(fileData).map(([key, value]: [string, any], index: number) => (
-                                        <div key={index} className="list-group-item">
-                                            <p className='text-left'>
-                                                <strong>{key}:</strong> {value}
-                                            </p>
-                                        </div>
-                                    ))}
-                                </p> */}
+                                <h5 className="card-title">Extraction de données</h5>
+                                <p className="card-text">
+                                    Les données ont été extraites avec succès.
+                                </p>
                             </div>
                         </div>
-                    </div>
                 </div>
-                    )}
+                </div>
+                )}
                 <div className="row">
                     <div className="col-10 mx-auto">
                         <div className="card mt-4">

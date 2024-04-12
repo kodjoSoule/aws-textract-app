@@ -93,6 +93,7 @@ const ReceiptDetails: React.FC = () => {
       try {
         if (!id) {
           setError('ID du reçu non spécifié dans l\'URL');
+          //redirect to home page /receipts
           return;
         }
         setLoading(true);
@@ -101,7 +102,7 @@ const ReceiptDetails: React.FC = () => {
         setReceiptDetails(details);
 
       } catch (error) {
-        setError('Erreur lors de la récupération des détails du reçu');
+          console.log('Erreur lors de la récupération des détails du reçu');
       } finally {
         setLoading(false);
       }
