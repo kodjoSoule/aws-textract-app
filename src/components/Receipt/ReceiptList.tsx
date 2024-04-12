@@ -53,7 +53,7 @@ const ReceiptList: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {receipts.length > 0 ? (
+            {receipts && receipts.length > 0 ? (
               receipts.map((receipt: Receipt, index: number) => (
                 <tr key={index}>
                   <td>{receipt.receipts_Id}</td>
