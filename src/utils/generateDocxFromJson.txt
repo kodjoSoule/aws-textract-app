@@ -1,0 +1,33 @@
+// import PizZip from 'pizzip';
+// import Docxtemplater from 'docxtemplater';
+// import { saveAs } from 'file-saver';
+
+
+// const generateDocxFromJson = async (data: any): Promise<void> => {
+//     try {
+//       // Charge le document modèle à partir du fichier local
+//       const templateContent = await fetch('/assets/template.docx');
+//       if (!templateContent.ok) {
+//         throw new Error('Failed to load template document');
+//       }
+//       const blob = await templateContent.blob();
+
+//       // Crée une nouvelle instance de Docxtemplater
+//       const zip = new PizZip(await blob.arrayBuffer());
+//       const doc = new Docxtemplater().loadZip(zip);
+
+//       // Définit les données pour le modèle
+//       doc.setData(data);
+
+//       // Rendu du document
+//       doc.render();
+
+//       // Convertit le document en Blob
+//       const out = doc.getZip().generate({ type: 'blob', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+
+//       // Enregistre le Blob en tant que fichier
+//       saveAs(out, 'receipt_details.docx');
+//     } catch (error) {
+//       console.error('Error generating DOCX from JSON:', error);
+//     }
+//   };

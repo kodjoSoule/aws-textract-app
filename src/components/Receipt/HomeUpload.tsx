@@ -88,14 +88,35 @@ export const FileUpload: React.FC = () => {
                             setMessage(data.message);
                         }
                         if(data.body !== undefined){
-                            const data_body_json = JSON.parse(data.body);
-                            console.log("***************************************************");
-                            console.log("Data from API: ");
-                            for (const key in data_body_json) {
-                                console.log(`${key}: ${data_body_json[key]}`);
+                            const data_body = JSON.parse(data.body);
+                            console.info("fileData: \n" + data_body);
+                        //show all items of data_body object
+                        for (const key in data_body) {
+                            console.log(key, data_body[key]);
+                        }
+                        console.log("**********************HK*****************************");
+                        for (const key in data_body) {
+                            if (typeof data_body[key] === 'object') {
+                                console.log(key + ": ");
+                                for (const nestedKey in data_body[key]) {
+                                    if (typeof data_body[key][nestedKey] === 'object') {
+                                    console.log(`- ${nestedKey}: `);
+                                    for (const nestedKey2 in data_body[key][nestedKey]) {
+                                        console.log(`-- ${nestedKey2}: ${data_body[key][nestedKey][nestedKey2]}`);
+                                    }
+                                }
+                                else {
+                                    console.log(`- ${nestedKey}: ${data_body[key][nestedKey]}`);
+                                }
+                                }
+                            } else {
+                                console.log(`${key}: ${data_body[key]}`);
                             }
+                        }
 
-                            setFileData(data.body);
+
+                        setFileData(data.body);
+
                         }else{
                             console.info("No fileData");
                         }
@@ -198,6 +219,7 @@ export const FileUpload: React.FC = () => {
                     </div>}
                 </div>
                 {/* extrait de fichier */}
+                { fileData && (
                 <div className="row">
                     <div className="col-10 mx-auto">
                         <div className="card mt-4">
@@ -217,7 +239,7 @@ export const FileUpload: React.FC = () => {
                         </div>
                     </div>
                 </div>
-
+                    )}
                 <div className="row">
                     <div className="col-10 mx-auto">
                         <div className="card mt-4">

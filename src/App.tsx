@@ -19,16 +19,17 @@ function App() {
         {/* /receipts */}
         <Route path="/receipts" element={<ReceiptList/>} />
         {/* /receipts:/id */}
-        <Route path="/receipts/:id" element={<ReceiptDetails />} />
+        <Route path="/receipt/:id" element={<ReceiptDetails />} />
 
         {/* /upload */}
         <Route path="/upload" element={<FileUpload />} />
         {/* About */}
         <Route path="/about" element={<About/>} />
-
       </Routes>
       <Footer/>
+      <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     </div>
+
   );
 }
 

@@ -54,7 +54,6 @@ return (
           <div className="card mb-2" key={index}>
             <div className="card-body">
               <h3 className="card-title">{receipt.receipts_Id}</h3>
-              //align to left
               <div className="list-group">
                 {Object.entries(receipt.KeyValuePairs).map(([key, value]: [string, any], index: number) => (
                   <div key={index} className="list-group-item">

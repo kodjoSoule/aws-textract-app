@@ -6,18 +6,19 @@ import { Receipt } from '../../types';
 const ReceiptList: React.FC = () => {
   const [receipts, setReceipts] = useState<Receipt[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-
   useEffect(() => {
     const fetchReceiptsFromApi = async () => {
       try {
         const fetchedReceipts = await fetchReceipts();
+        //si tous les donnes sont recuperes
+        if(fetchedReceipts.body){
+          setLoading(false);
+        }
         setReceipts(fetchedReceipts.body);
-        setLoading(false);
       } catch (error) {
         console.error('Error fetching receipts:', error);
       }
     };
-
     fetchReceiptsFromApi();
   }, []);
 
@@ -61,12 +62,13 @@ const ReceiptList: React.FC = () => {
                     <Link to={`/receipt/${receipt.receipts_Id}`}>{receipt.DocumentKey}</Link>
                   </td>
                   <td className="d-flex align-items-center">
-                    <button className="btn btn-sm btn-danger me-1" onClick={() => handleDeleteReceipt(receipt.receipts_Id)}>
-                      Supprimer
-                    </button>
-                    <button className="btn btn-sm btn-success me-1" onClick={() => handleDownloadReceipt(receipt.receipts_Id)}>
+                  <Link to={`/receipt/${receipt.receipts_Id}`} className='btn bnt-sm btn-info'>Afficher Extrait</Link>
+                    {/* <button className="btn btn-sm btn-danger me-1" onClick={() => handleDeleteReceipt(receipt.receipts_Id)}>
+                      Afficher Extrait
+                    </button> */}
+                    {/* <button className="btn btn-sm btn-success me-1" onClick={() => handleDownloadReceipt(receipt.receipts_Id)}>
                       Télécharger
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
               ))
