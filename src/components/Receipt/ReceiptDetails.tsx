@@ -148,10 +148,8 @@ const ReceiptDetails: React.FC = () => {
     <button onClick={handleDownloadTxt} className="btn btn-primary mt-2"> Télécharger en format texte </button>
   </div>
 </div>
-        </div>
-
+      </div>
       )}
-
     </div>
   );
 };
